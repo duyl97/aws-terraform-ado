@@ -1,35 +1,37 @@
 trigger:
   branches:
     include:
-      - main
+      - main  # Change this to your main branch name
   paths:
     exclude:
-      - README.md
+      - README.md  # Update with files that should not trigger a build
 
 pr:
   branches:
     include:
-      - '*'
+      - '*'  # Trigger for all branches created from the main branch
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - task: TerraformTaskV2@2
-    inputs:
-      provider: 'aws'
-      command: 'init'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
-  
-  - task: TerraformTaskV2@2
-    inputs:
-      provider: 'aws'
-      command: 'validate'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
-  
-  - task: TerraformTaskV2@2
-    inputs:
-      provider: 'aws'
-      command: 'plan'
-      commandOptions: '-out=tfplan -input=false'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
+- task: TerraformInstaller@0
+  inputs:
+    terraformVersion: 'latest'  # Replace with a specific version if needed
+    terraformLocation: 'Auto'
+
+- task: TerraformCLI@0
+  inputs:
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    command: 'init'
+
+- task: TerraformCLI@0
+  inputs:
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    command: 'validate'
+
+- task: TerraformCLI@0
+  inputs:
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    command: 'plan'
+    commandOptions: '-out=tfplan -input=false'
