@@ -1,0 +1,37 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - README.md
+
+pr:
+  branches:
+    include:
+      - '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.8'
+    addToPath: true
+
+- task: AwsCredentials@1
+  inputs:
+    awsCredentials: 'AWSServiceConnection'
+    regionName: 'ap-southeast-1'
+
+- script: |
+    # Initialize Terraform
+    terraform init
+
+    # Validate Terraform configuration
+    terraform validate
+
+    # (Optional) Plan changes
+    terraform plan -out=tfplan -input=false
+  displayName: 'Terraform Plan'
