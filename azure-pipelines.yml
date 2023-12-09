@@ -15,23 +15,21 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.8'
-    addToPath: true
-
-- task: AwsCredentials@1
-  inputs:
-    awsCredentials: 'AWSServiceConnection'
-    regionName: 'ap-southeast-1'
-
-- script: |
-    # Initialize Terraform
-    terraform init
-
-    # Validate Terraform configuration
-    terraform validate
-
-    # (Optional) Plan changes
-    terraform plan -out=tfplan -input=false
-  displayName: 'Terraform Plan'
+  - task: TerraformTaskV2@2
+    inputs:
+      provider: 'aws'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+  
+  - task: TerraformTaskV2@2
+    inputs:
+      provider: 'aws'
+      command: 'validate'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+  
+  - task: TerraformTaskV2@2
+    inputs:
+      provider: 'aws'
+      command: 'plan'
+      commandOptions: '-out=tfplan -input=false'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
