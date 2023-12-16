@@ -24,6 +24,7 @@ steps:
   displayName: 'terraform init'
   inputs:
     providerServiceAws: 'AWSDevServiceConnection'
+    providerAwsRegion: 'ap-southeast-1'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     command: 'init'
 
@@ -31,6 +32,7 @@ steps:
   displayName: 'terraform validate'
   inputs:
     providerServiceAws: 'AWSDevServiceConnection'
+    providerAwsRegion: 'ap-southeast-1'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     command: 'validate'
 
@@ -38,6 +40,7 @@ steps:
   displayName: 'terraform apply'
   inputs:
     providerServiceAws: 'AWSDevServiceConnection'
+    providerAwsRegion: 'ap-southeast-1'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     command: 'plan'
     commandOptions: '-out=tfplan -input=false'
