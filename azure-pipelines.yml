@@ -21,17 +21,23 @@ steps:
     terraformLocation: 'Auto'
 
 - task: TerraformCLI@0
+  displayName: 'terraform init'
   inputs:
+    providerServiceAws: 'AWSDevServiceConnection'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     command: 'init'
 
 - task: TerraformCLI@0
+  displayName: 'terraform validate'
   inputs:
+    providerServiceAws: 'AWSDevServiceConnection'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     command: 'validate'
 
 - task: TerraformCLI@0
+  displayName: 'terraform apply'
   inputs:
+    providerServiceAws: 'AWSDevServiceConnection'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     command: 'plan'
     commandOptions: '-out=tfplan -input=false'
