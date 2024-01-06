@@ -44,3 +44,4 @@ steps:
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     command: 'plan'
     commandOptions: '-out=tfplan -input=false'
+    publishPlanResults: 'tfplan'
